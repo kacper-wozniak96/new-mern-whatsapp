@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
 import express from 'express';
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
 import Pusher from 'pusher';
 // eslint-disable-next-line import/extensions
 import Messages from './dbMessages.js';
@@ -22,6 +22,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', '*');
   next();
 });
+// eslint-disable-next-line camelcase
 const connection_url =
   'mongodb+srv://admin:FKS30RUEmOf5npRt@cluster0.gabj6.mongodb.net/whatsappdb?retryWrites=true&w=majority';
 
@@ -47,6 +48,8 @@ db.once('open', () => {
       pusher.trigger('messages', 'inserted', {
         name: messageDetails.name,
         message: messageDetails.message,
+        timestamp: messageDetails.timestamp,
+        received: messageDetails.received,
       });
     } else {
       console.log('Error triggering Pusher');
